@@ -1,0 +1,33 @@
+<div class="app-container">
+  <app-header (searchQuery)="onSearch($event)" (viewChange)="onViewChange($event)">
+  </app-header>
+
+  <main class="main-content">
+    <div *ngIf="currentView === 'home'">
+      <div class="hero-section">
+        <h1 class="hero-title">Bienvenue sur Blogger</h1>
+        <p class="hero-subtitle">Découvrez des histoires inspirantes et partagez les vôtres</p>
+      </div>
+
+      <div class="categories-bar">
+        <button *ngFor="let category of categories" (click)="filterByCategory(category)"
+          [class.active]="selectedCategory === category" class="category-btn">
+          {{ category }}
+        </button>
+      </div>
+
+      <div class="posts-grid" *ngIf="filteredPosts.length > 0">
+        <app-post-card *ngFor="let post of filteredPosts" [post]="post" (viewDetails)="onViewDetails($event)"></app-post-card>
+      </div>
+      <div *ngIf="filteredPosts.length === 0" class="no-results">
+        <p class="no-results-icon">🔍</p>
+        <p class="no-results-text">Aucun article trouvé</p>
+        <p class="no-results-subtitle">Essayez une autre recherche ou catégorie</p>
+      </div>
+    </div>
+
+    <div *ngIf="currentView === 'create'">
+      </div>
+
+  </main>
+</div>

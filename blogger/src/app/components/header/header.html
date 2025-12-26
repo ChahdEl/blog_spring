@@ -1,0 +1,62 @@
+<!-- src/components/header/header.component.html -->
+<header class="header">
+  <div class="header-content">
+    <div class="header-left">
+      <h1 class="logo" (click)="changeView('home')">
+        <span class="logo-icon">📝</span>
+        Blogger
+      </h1>
+      <nav class="nav-desktop">
+        <button (click)="changeView('home')" class="nav-link">Home</button>
+        <button (click)="changeView('trending')" class="nav-link">Trending</button>
+        <button (click)="changeView('categories')" class="nav-link">Categories</button>
+      </nav>
+    </div>
+
+    <div class="header-right">
+      <div class="search-box">
+        <input type="text" [(ngModel)]="searchText" (keyup.enter)="onSearch()" placeholder="Search..."
+          class="search-input" />
+        <button (click)="onSearch()" class="search-btn"></button>
+      </div>
+
+      <div class="auth-buttons" *ngIf="!isLoggedIn">
+        <button (click)="changeView('login')" class="btn-login">Login</button>
+        <button (click)="changeView('reader')" class="btn-register">Sign Up</button>
+        <button (click)="changeView('blogguer')" class="btn-create">Blog</button>
+      </div>
+
+      <div class="auth-buttons" *ngIf="isLoggedIn">
+        <button *ngIf="isBlogger" (click)="changeView('create')" class="btn-create">Create Blog</button>
+        <div class="user-profile" (click)="changeView('profile')" title="Edit Profile">
+          <img [src]="currentUser?.avatar || 'https://ui-avatars.com/api/?name=' + (currentUser?.username || 'User')"
+            alt="Avatar" class="header-avatar">
+          <span class="username">{{ currentUser?.username }}</span>
+        </div>
+        <button (click)="logout()" class="btn-login">Logout</button>
+      </div>
+
+    </div>
+  </div>
+
+  <nav class="nav-mobile" [class.open]="isMenuOpen">
+    <button (click)="changeView('home')" class="nav-link-mobile">Home</button>
+    <button (click)="changeView('trending')" class="nav-link-mobile">Trending</button>
+    <button (click)="changeView('categories')" class="nav-link-mobile">Categories</button>
+
+    <div *ngIf="isLoggedIn; else mobileNotLoggedIn" class="mobile-auth-buttons">
+      <button *ngIf="isBlogger" (click)="changeView('create')" class="btn-create-mobile">✍️ Create Post</button>
+      <span class="mobile-user-info">
+        {{ currentUser?.username }} ({{ isBlogger ? 'Blogger' : 'Reader' }})
+      </span>
+      <button (click)="logout()" class="btn-logout-mobile">Logout</button>
+    </div>
+
+    <ng-template #mobileNotLoggedIn>
+      <div class="mobile-auth-buttons">
+        <button (click)="changeView('login')" class="btn-login-mobile">Login</button>
+        <button (click)="changeView('signup')" class="btn-signup-mobile">Sign Up</button>
+      </div>
+    </ng-template>
+  </nav>
+</header>

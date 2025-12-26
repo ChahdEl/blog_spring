@@ -1,0 +1,99 @@
+<div class="post-detail-container" *ngIf="post">
+    <button class="back-button" (click)="goBack()">
+        ← Retour
+    </button>
+
+    <article class="post-detail">
+        <div class="post-header">
+            <span class="category-badge">{{ post.category }}</span>
+            <h1 class="post-title">{{ post.title }}</h1>
+
+            <div class="post-meta">
+                <div class="author-info">
+                    <img [src]="post.author.avatar || 'https://ui-avatars.com/api/?name=' + post.author.username + '&background=a855f7&color=fff&size=200'"
+                        [alt]="post.author.username" class="author-avatar"
+                        (error)="$any($event.target).src='https://ui-avatars.com/api/?name=' + post.author.username + '&background=a855f7&color=fff&size=200'" />
+                    <div>
+                        <p class="author-name">{{ post.author.username }}</p>
+                        <p class="post-date">{{ post.date | date: 'dd MMMM yyyy' }}</p>
+                    </div>
+                </div>
+                <span class="read-time" *ngIf="post.readTime">⏱️ {{ post.readTime }} min de lecture</span>
+            </div>
+        </div>
+
+        <div class="post-image-container">
+            <img [src]="post.image" [alt]="post.title" class="post-image" />
+        </div>
+
+        <div class="post-content">
+            <p class="post-excerpt">{{ post.excerpt }}</p>
+
+            <div class="post-body">
+                <div [innerHTML]="post.content | safeHtml" class="prose prose-invert max-w-none"></div>
+            </div>
+
+            <div class="post-tags">
+                <span *ngFor="let tag of post.tags" class="tag">{{ tag }}</span>
+            </div>
+        </div>
+
+        <div class="post-actions">
+            <button (click)="onLike()" class="action-btn like-btn" [class.liked]="post.likedByCurrentUser"
+                [class.liking]="isLiking">
+                <span class="heart-icon">{{ post.likedByCurrentUser ? '❤️' : '🤍' }}</span>
+                {{ post.likes }} J'aime
+            </button>
+            <button class="action-btn comment-btn">
+                💬 {{ post.comments }} Commentaires
+            </button>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="comments-section">
+            <h3 class="comments-title">Commentaires ({{ comments.length }})</h3>
+
+            <!-- Comment Input -->
+            <div class="comment-input-container" *ngIf="currentUser">
+                <img [src]="currentUser.avatar || 'https://ui-avatars.com/api/?name=' + currentUser.username + '&background=a855f7&color=fff&size=200'"
+                    [alt]="currentUser.username" class="comment-input-avatar">
+                <input [(ngModel)]="newComment" (keyup.enter)="addComment()" placeholder="Ajouter un commentaire..."
+                    class="comment-input">
+                <button (click)="addComment()" [disabled]="!newComment.trim()" class="comment-submit-btn">
+                    Publier
+                </button>
+            </div>
+
+            <!-- Comments List -->
+            <div class="comments-list">
+                <div *ngFor="let comment of comments" class="comment-item">
+                    <img [src]="comment.author.avatar || 'https://ui-avatars.com/api/?name=' + comment.author.username + '&background=a855f7&color=fff&size=200'"
+                        [alt]="comment.author.username" class="comment-avatar">
+                    <div class="comment-content">
+                        <div class="comment-header">
+                            <span class="comment-username">{{ comment.author.username }}</span>
+                            <span class="comment-date">{{ comment.createdAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+                        </div>
+                        <p class="comment-text">{{ comment.content }}</p>
+                    </div>
+                    <button *ngIf="comment.canDelete" (click)="deleteComment(comment.id)" class="comment-delete-btn"
+                        title="Supprimer">
+                        🗑️
+                    </button>
+                </div>
+
+                <div *ngIf="comments.length === 0" class="no-comments">
+                    <p>Aucun commentaire pour le moment. Soyez le premier à commenter !</p>
+                </div>
+            </div>
+        </div>
+    </article>
+</div>
+
+<div class="not-found" *ngIf="!post">
+    <p class="not-found-icon">😕</p>
+    <p class="not-found-text">Article non trouvé</p>
+    <button class="back-button" (click)="goBack()">
+        ← Retour à l'accueil
+    </button>
+</div>

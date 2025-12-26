@@ -1,0 +1,234 @@
+<div class="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+  <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-12 xl:px-16">
+
+    <form [formGroup]="postForm" (ngSubmit)="onSubmit()" class="relative">
+
+      <!-- Header avec actions -->
+      <div class="flex items-center justify-between mb-8 sticky top-0 z-50 bg-slate-950/80 backdrop-blur-xl border-b border-slate-800/50 py-4 -mx-4 px-4 sm:-mx-6 sm:px-6 lg:-mx-12 lg:px-12 xl:-mx-16 xl:px-16">
+        <button type="button" (click)="onCancel()"
+          class="flex items-center gap-2 text-slate-400 hover:text-white transition-colors group">
+          <svg class="w-5 h-5 transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+          </svg>
+          <span class="font-medium">Retour</span>
+        </button>
+
+        <div class="flex items-center gap-3">
+          <button type="button" (click)="saveDraft()"
+            class="px-4 py-2 text-sm font-medium text-slate-300 hover:text-white hover:bg-slate-800/50 rounded-lg transition-all">
+            Brouillon
+          </button>
+          <button type="submit" [disabled]="postForm.invalid"
+            class="px-6 py-2.5 rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 hover:scale-105 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:shadow-none">
+            <span class="flex items-center gap-2">
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              Publier
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Image de couverture avec preview élégant -->
+      <div class="mb-20 group">
+        <div *ngIf="postForm.get('image')?.value"
+          class="relative h-40 w-72 rounded-2xl overflow-hidden shadow-2xl shadow-black/50 ring-1 ring-white/10 mb-7 transition-all hover:shadow-blue-500/20">
+          <img [src]="postForm.get('image')?.value"
+            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent"></div>
+          <button type="button" (click)="postForm.patchValue({image: ''})"
+            class="absolute top-4 right-4 bg-red-500/90 backdrop-blur-sm text-white p-2.5 rounded-full hover:bg-red-600 transition-all hover:rotate-90 shadow-lg">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+            </svg>
+          </button>
+        </div>
+
+        <div *ngIf="!postForm.get('image')?.value"
+          class="relative h-48 w-full rounded-2xl border-2 border-dashed border-slate-700 hover:border-blue-500/50 transition-all bg-slate-900/30 backdrop-blur-sm flex items-center justify-center group cursor-pointer">
+          <div class="text-center">
+            <svg class="w-12 h-12 mx-auto text-slate-600 group-hover:text-blue-500 transition-colors mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <input type="text" formControlName="image"
+              class="w-full bg-transparent border-none text-slate-400 placeholder-slate-600 focus:ring-0 focus:outline-none text-sm text-center font-mono"
+              placeholder="Collez l'URL de l'image de couverture...">
+          </div>
+        </div>
+      </div>
+
+      <!-- Titre avec animation -->
+      <div class="mb-10 relative">
+        <input type="text" formControlName="title"
+          class="w-full bg-transparent border-none text-2xl sm:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white via-blue-100 to-purple-200 placeholder-slate-700 focus:ring-0 focus:outline-none transition-all"
+          placeholder="Titre du Blog...">
+        <div class="h-1 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 rounded-full mt-4 transform scale-x-0 transition-transform origin-left"
+          [class.scale-x-100]="postForm.get('title')?.value"></div>
+      </div>
+
+      <!-- Métadonnées avec badges modernes -->
+      <div class="flex flex-wrap items-center gap-4 mb-12">
+        <div class="relative">
+          <select formControlName="category"
+            class="appearance-none bg-gradient-to-r from-slate-800/80 to-slate-700/80 backdrop-blur-sm border border-slate-600/50 rounded-xl py-2.5 px-4 pr-10 text-sm font-medium text-white cursor-pointer hover:border-blue-500/50 focus:ring-2 focus:ring-blue-500/50 focus:outline-none transition-all shadow-lg">
+            <option *ngFor="let cat of categories" [value]="cat">📁 {{ cat }}</option>
+          </select>
+          <svg class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+          </svg>
+        </div>
+
+        <div class="flex-1 min-w-[00px]">
+          <textarea formControlName="excerpt" rows="1"
+            class="w-full bg-slate-800/30 backdrop-blur-sm border border-slate-700/50 rounded-xl py-4 px-6 text-base text-slate-300 placeholder-slate-600 focus:ring-2 focus:ring-purple-500/50 focus:border-transparent focus:outline-none resize-none overflow-hidden transition-all"
+            placeholder=" Resume du Blog"
+            oninput="this.style.height = ''; this.style.height = this.scrollHeight + 'px'"></textarea>
+        </div>
+      </div>
+
+      <!-- Toolbar moderne et réactif -->
+      <div *ngIf="editor"
+        class="sticky top-[73px] z-40 bg-slate-900/95 backdrop-blur-xl border border-slate-800/50 rounded-2xl p-3 mb-8 shadow-2xl shadow-black/50 transition-all">
+
+        <div class="flex flex-wrap items-center gap-2">
+          <!-- Formatting basique -->
+          <div class="flex items-center gap-1 bg-slate-800/50 rounded-lg p-1">
+            <button type="button" (click)="editor.chain().focus().toggleBold().run()"
+              [class.bg-blue-500]="editor.isActive('bold')"
+              [class.text-white]="editor.isActive('bold')"
+              class="p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-700/50 transition-all"
+              title="Gras (Ctrl+B)">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M15.6 10.79c.97-.67 1.65-1.77 1.65-2.79 0-2.26-1.75-4-4-4H7v14h7.04c2.09 0 3.71-1.7 3.71-3.79 0-1.52-.86-2.82-2.15-3.42zM10 6.5h3c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5h-3v-3zm3.5 9H10v-3h3.5c.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5z"/>
+              </svg>
+            </button>
+            <button type="button" (click)="editor.chain().focus().toggleItalic().run()"
+              [class.bg-blue-500]="editor.isActive('italic')"
+              [class.text-white]="editor.isActive('italic')"
+              class="p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-700/50 transition-all"
+              title="Italique (Ctrl+I)">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M10 4v3h2.21l-3.42 8H6v3h8v-3h-2.21l3.42-8H18V4z"/>
+              </svg>
+            </button>
+            <button type="button" (click)="editor.chain().focus().toggleUnderline().run()"
+              [class.bg-blue-500]="editor.isActive('underline')"
+              [class.text-white]="editor.isActive('underline')"
+              class="p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-700/50 transition-all"
+              title="Souligné (Ctrl+U)">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M12 17c3.31 0 6-2.69 6-6V3h-2.5v8c0 1.93-1.57 3.5-3.5 3.5S8.5 12.93 8.5 11V3H6v8c0 3.31 2.69 6 6 6zm-7 2v2h14v-2H5z"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Titres -->
+          <div class="flex items-center gap-1 bg-slate-800/50 rounded-lg p-1">
+            <button type="button" (click)="editor.chain().focus().toggleHeading({ level: 1 }).run()"
+              [class.bg-purple-500]="editor.isActive('heading', { level: 1 })"
+              [class.text-white]="editor.isActive('heading', { level: 1 })"
+              class="px-3 py-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-700/50 font-bold text-sm transition-all"
+              title="Titre 1">
+              H1
+            </button>
+            <button type="button" (click)="editor.chain().focus().toggleHeading({ level: 2 }).run()"
+              [class.bg-purple-500]="editor.isActive('heading', { level: 2 })"
+              [class.text-white]="editor.isActive('heading', { level: 2 })"
+              class="px-3 py-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-700/50 font-bold text-sm transition-all"
+              title="Titre 2">
+              H2
+            </button>
+            <button type="button" (click)="editor.chain().focus().setParagraph().run()"
+              [class.bg-purple-500]="editor.isActive('paragraph')"
+              [class.text-white]="editor.isActive('paragraph')"
+              class="px-3 py-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-700/50 text-sm transition-all"
+              title="Paragraphe">
+              P
+            </button>
+          </div>
+
+          <!-- Listes -->
+          <div class="flex items-center gap-1 bg-slate-800/50 rounded-lg p-1">
+            <button type="button" (click)="editor.chain().focus().toggleBulletList().run()"
+              [class.bg-green-500]="editor.isActive('bulletList')"
+              [class.text-white]="editor.isActive('bulletList')"
+              class="p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-700/50 transition-all"
+              title="Liste à puces">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M4 10.5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5 1.5-.67 1.5-1.5-.67-1.5-1.5-1.5zm0-6c-.83 0-1.5.67-1.5 1.5S3.17 7.5 4 7.5 5.5 6.83 5.5 6 4.83 4.5 4 4.5zm0 12c-.83 0-1.5.68-1.5 1.5s.68 1.5 1.5 1.5 1.5-.68 1.5-1.5-.67-1.5-1.5-1.5zM7 19h14v-2H7v2zm0-6h14v-2H7v2zm0-8v2h14V5H7z"/>
+              </svg>
+            </button>
+            <button type="button" (click)="editor.chain().focus().toggleOrderedList().run()"
+              [class.bg-green-500]="editor.isActive('orderedList')"
+              [class.text-white]="editor.isActive('orderedList')"
+              class="p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-700/50 transition-all"
+              title="Liste numérotée">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M2 17h2v.5H3v1h1v.5H2v1h3v-4H2v1zm1-9h1V4H2v1h1v3zm-1 3h1.8L2 13.1v.9h3v-1H3.2L5 10.9V10H2v1zm5-6v2h14V5H7zm0 14h14v-2H7v2zm0-6h14v-2H7v2z"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Citation et code -->
+          <div class="flex items-center gap-1 bg-slate-800/50 rounded-lg p-1">
+            <button type="button" (click)="editor.chain().focus().toggleBlockquote().run()"
+              [class.bg-yellow-500]="editor.isActive('blockquote')"
+              [class.text-white]="editor.isActive('blockquote')"
+              class="p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-700/50 transition-all"
+              title="Citation">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/>
+              </svg>
+            </button>
+            <button type="button" (click)="editor.chain().focus().toggleCodeBlock().run()"
+              [class.bg-pink-500]="editor.isActive('codeBlock')"
+              [class.text-white]="editor.isActive('codeBlock')"
+              class="p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-700/50 font-mono text-xs transition-all"
+              title="Bloc de code">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M9.4 16.6L4.8 12l4.6-4.6L8 6l-6 6 6 6 1.4-1.4zm5.2 0l4.6-4.6-4.6-4.6L16 6l6 6-6 6-1.4-1.4z"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Couleur du texte -->
+          <div class="ml-auto flex items-center gap-2 bg-slate-800/50 rounded-lg p-1">
+            <label class="relative cursor-pointer group">
+              <div class="w-8 h-8 rounded-md bg-gradient-to-br from-red-500 via-purple-500 to-blue-500 group-hover:scale-110 transition-transform shadow-lg flex items-center justify-center">
+                <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 22C6.49 22 2 17.51 2 12S6.49 2 12 2s10 4.04 10 9c0 3.31-2.69 6-6 6h-1.77c-.28 0-.5.22-.5.5 0 .12.05.23.13.33.41.47.64 1.06.64 1.67 0 1.38-1.12 2.5-2.5 2.5zm0-18c-4.41 0-8 3.59-8 8s3.59 8 8 8c.28 0 .5-.22.5-.5 0-.16-.08-.28-.14-.35-.41-.46-.63-1.05-.63-1.65 0-1.38 1.12-2.5 2.5-2.5H16c2.21 0 4-1.79 4-4 0-3.86-3.59-7-8-7z"/>
+                  <circle cx="6.5" cy="11.5" r="1.5"/>
+                  <circle cx="9.5" cy="7.5" r="1.5"/>
+                  <circle cx="14.5" cy="7.5" r="1.5"/>
+                  <circle cx="17.5" cy="11.5" r="1.5"/>
+                </svg>
+              </div>
+              <input type="color" (input)="editor.chain().focus().setColor($any($event.target).value).run()"
+                class="absolute opacity-0 w-0 h-0">
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Zone d'édition immersive -->
+      <div class="bg-slate-900/30 backdrop-blur-sm border border-slate-800/50 rounded-2xl p-6 lg:p-8 xl:p-10 shadow-2xl shadow-black/30 min-h-[600px] focus-within:border-blue-500/50 focus-within:shadow-blue-500/10 transition-all w-full">
+        <div #editorElement class="tiptap-editor prose prose-invert w-full max-w-full focus:outline-none"></div>
+      </div>
+
+      <!-- Statistiques en temps réel -->
+      <div class="mt-6 flex items-center justify-between text-sm text-slate-500">
+        <div class="flex items-center gap-6">
+          <span>{{ getWordCount() }} mots</span>
+          <span>{{ getCharCount() }} caractères</span>
+          <span>⏱️ {{ getReadTime() }} min de lecture</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+          <span>Auto-sauvegarde activée</span>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>

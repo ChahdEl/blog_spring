@@ -1,0 +1,47 @@
+<article class="post-card">
+  <div class="post-image-container">
+    <img [src]="post.image" [alt]="post.title" class="post-image" />
+    <div class="post-overlay">
+      <span class="category-badge">{{ post.category }}</span>
+    </div>
+  </div>
+
+  <div class="post-content">
+    <div class="post-meta">
+      <div class="author-info">
+        <img
+          [src]="post.author.avatar || 'https://ui-avatars.com/api/?name=' + post.author.username + '&background=a855f7&color=fff&size=200'"
+          [alt]="post.author.username" class="author-avatar"
+          (error)="$any($event.target).src='https://ui-avatars.com/api/?name=' + post.author.username + '&background=a855f7&color=fff&size=200'" />
+        <div>
+          <p class="author-name">{{ post.author.username }}</p>
+          <p class="post-date">{{ post.date | date: 'dd MMM yyyy' }}</p>
+        </div>
+      </div>
+      <span class="read-time" *ngIf="post.readTime">⏱️ {{ post.readTime }} min</span>
+    </div>
+
+    <h2 class="post-title" (click)="onViewDetails()">{{ post.title }}</h2>
+    <p class="post-excerpt">{{ post.excerpt }}</p>
+
+    <div class="post-tags">
+      <span *ngFor="let tag of post.tags" class="tag">{{ tag }}</span>
+    </div>
+
+    <div class="post-footer">
+      <div class="post-stats">
+        <button (click)="onLike($event)" class="stat-btn" [class.liked]="post.likedByCurrentUser"
+          [class.liking]="isLiking">
+          <span class="heart-icon">{{ post.likedByCurrentUser ? '❤️' : '🤍' }}</span>
+          {{ post.likes }}
+        </button>
+        <button class="stat-btn">
+          💬 {{ post.comments }}
+        </button>
+      </div>
+      <button (click)="onViewDetails()" class="btn-read">
+        Lire plus →
+      </button>
+    </div>
+  </div>
+</article>

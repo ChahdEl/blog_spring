@@ -1,0 +1,115 @@
+<div class="app-container">
+  <app-header (searchQuery)="onSearch($event)" (viewChange)="onViewChange($event)">
+  </app-header>
+
+  <main class="main-content">
+    <div class="profile-wrapper">
+      <!-- Hero Section -->
+      <div class="hero-section">
+        <h1 class="hero-title">Mon Profil</h1>
+        <p class="hero-subtitle">Gérez vos informations personnelles</p>
+      </div>
+
+      <!-- Profile Card -->
+      <div class="profile-card">
+        <!-- Avatar Section -->
+        <div class="avatar-section">
+          <div class="avatar-container">
+            <img [src]="profileForm.get('avatar')?.value || 'https://ui-avatars.com/api/?name=' + (currentUser?.username || 'User')"
+              alt="Avatar" class="avatar-preview">
+            <div class="avatar-badge">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="user-role-badge" [class.blogger]="currentUser?.role === 'BLOGGER'" [class.reader]="currentUser?.role === 'READER'">
+            {{ currentUser?.role === 'BLOGGER' ? '✍️ Blogger' : '📖 Reader' }}
+          </div>
+        </div>
+
+        <!-- Alerts -->
+        <div *ngIf="successMessage" class="alert success">
+          <svg class="alert-icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+          </svg>
+          {{ successMessage }}
+        </div>
+        <div *ngIf="errorMessage" class="alert error">
+          <svg class="alert-icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+          </svg>
+          {{ errorMessage }}
+        </div>
+
+        <!-- Form -->
+        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()" class="profile-form">
+          <div class="form-grid">
+            <!-- Username -->
+            <div class="form-group">
+              <label class="form-label">
+                <svg class="label-icon" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+                </svg>
+                Nom d'utilisateur
+              </label>
+              <input type="text" formControlName="username" class="form-input" placeholder="Votre nom d'utilisateur">
+              <div *ngIf="profileForm.get('username')?.invalid && profileForm.get('username')?.touched" class="error-text">
+                Le nom d'utilisateur doit contenir au moins 3 caractères
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group">
+              <label class="form-label">
+                <svg class="label-icon" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"/>
+                  <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"/>
+                </svg>
+                Email
+              </label>
+              <input type="email" formControlName="email" class="form-input disabled" placeholder="votre@email.com">
+              <p class="helper-text">L'email ne peut pas être modifié</p>
+            </div>
+
+            <!-- Avatar URL -->
+            <div class="form-group full-width">
+              <label class="form-label">
+                <svg class="label-icon" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"/>
+                </svg>
+                URL de l'avatar
+              </label>
+              <input type="text" formControlName="avatar" class="form-input" placeholder="https://example.com/avatar.jpg">
+              <p class="helper-text">Collez l'URL de votre image de profil</p>
+            </div>
+
+            <!-- Bio -->
+            <div class="form-group full-width">
+              <label class="form-label">
+                <svg class="label-icon" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                </svg>
+                Biographie
+              </label>
+              <textarea formControlName="bio" class="form-input textarea" rows="4" placeholder="Parlez-nous de vous..."></textarea>
+              <p class="helper-text">Décrivez-vous en quelques mots</p>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" [disabled]="profileForm.invalid || isLoading" class="btn-save">
+            <svg *ngIf="!isLoading" class="btn-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <svg *ngIf="isLoading" class="btn-icon animate-spin" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            {{ isLoading ? 'Enregistrement...' : 'Enregistrer les modifications' }}
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+</div>

@@ -1,0 +1,180 @@
+<header-lading></header-lading>
+
+<div class="landing-container">
+  <!-- Hero Section -->
+  <header class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <span class="pulse"></span>
+        Nouvelle plateforme de blogging
+      </div>
+      <h1>Partagez vos idées avec <span class="gradient-text">le monde</span></h1>
+      <p class="hero-subtitle">
+        Rejoignez une communauté passionnée de créateurs et de lecteurs. Exprimez-vous, inspirez les
+        autres et découvrez des perspectives uniques.
+      </p>
+      <div class="cta-group">
+        <button class="btn btn-primary" (click)="navigateToRegister()">
+          Commencer maintenant
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+        <button class="btn btn-secondary" (click)="navigateToLogin()">Se connecter</button>
+      </div>
+
+      <!-- Stats Preview -->
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-number">10k+</span>
+          <span class="stat-label">Articles</span>
+        </div>
+        <div class="divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">5k+</span>
+          <span class="stat-label">Auteurs</span>
+        </div>
+        <div class="divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">50k+</span>
+          <span class="stat-label">Lecteurs</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="visual-card main-card">
+        <div class="card-header">
+          <div class="avatar"></div>
+          <div class="lines">
+            <div class="line short"></div>
+            <div class="line long"></div>
+          </div>
+        </div>
+        <div class="card-image"></div>
+        <div class="card-body">
+          <div class="line full"></div>
+          <div class="line full"></div>
+          <div class="line medium"></div>
+        </div>
+      </div>
+      <!-- Decorative elements -->
+      <div class="floating-bubble bubble-1"></div>
+      <div class="floating-bubble bubble-2"></div>
+    </div>
+  </header>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="section-header">
+      <h2>Pourquoi nous rejoindre ?</h2>
+      <p>Tout ce dont vous avez besoin pour réussir votre blog</p>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="icon-wrapper color-1">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+          </svg>
+        </div>
+        <h3>Création Intuitive</h3>
+        <p>
+          Un éditeur puissant et simple pour donner vie à vos histoires avec images et mise en forme
+          riche.
+        </p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon-wrapper color-2">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+          </svg>
+        </div>
+        <h3>Communauté Active</h3>
+        <p>Interagissez avec une communauté bienveillante. Commentaires, likes et partages.</p>
+      </div>
+
+      <div class="feature-card">
+        <div class="icon-wrapper color-3">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="2" y1="12" x2="22" y2="12"></line>
+            <path
+              d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+            ></path>
+          </svg>
+        </div>
+        <h3>Visibilité Globale</h3>
+        <p>
+          Faites entendre votre voix. Vos articles sont référencés et partagés avec le monde entier.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta-section">
+    <div class="cta-content">
+      <h2>Prêt à commencer l'aventure?</h2>
+      <p>Rejoignez des milliers de blogueurs dès aujourd'hui. C'est gratuit.</p>
+      <button class="btn btn-light btn-lg" (click)="navigateToRegister()">
+        Créer mon compte gratuitement
+      </button>
+    </div>
+  </section>
+
+  <footer class="landing-footer">
+    <p>&copy; 2024 Blogguer. Tous droits réservés.</p>
+    <div class="footer-links">
+      <a href="#">Conditions</a>
+      <a href="#">Confidentialité</a>
+      <a href="#">Contact</a>
+    </div>
+  </footer>
+</div>
